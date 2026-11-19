@@ -3,8 +3,16 @@
 Official backend API for **FandomVerse** social platform (Flutter + Node.js Express).
 
 ## 🌐 Live Production API
-- **Base URL:** [https://fandomverse-backend.vercel.app](https://fandomverse-backend.vercel.app)
+- **Live Status (Click to test):** [https://fandomverse-backend.vercel.app/api/health](https://fandomverse-backend.vercel.app/api/health)
+- **API Base URL for Flutter/App:** `https://fandomverse-backend.vercel.app/api`
+
+---
+
+## 📡 Live Test Links (Open in Browser)
 - **Health Check:** [https://fandomverse-backend.vercel.app/api/health](https://fandomverse-backend.vercel.app/api/health)
+- **Content Feed:** [https://fandomverse-backend.vercel.app/api/content](https://fandomverse-backend.vercel.app/api/content)
+- **Events List:** [https://fandomverse-backend.vercel.app/api/events](https://fandomverse-backend.vercel.app/api/events)
+- **Shop Catalog:** [https://fandomverse-backend.vercel.app/api/shop/overview](https://fandomverse-backend.vercel.app/api/shop/overview)
 
 ---
 
