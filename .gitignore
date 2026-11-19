@@ -1,5 +1,6 @@
 node_modules/
 .env
+mydb.sqlite
 mydb.sqlite-shm
 mydb.sqlite-wal
 npm-debug.log*
