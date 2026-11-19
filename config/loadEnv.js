@@ -14,6 +14,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 dotenv.config({ path: path.resolve(__dirname, "..", ".env") });
 
+// Ensure critical defaults exist in serverless environments where .env is gitignored
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = "mySuperSecretKey";
+}
+if (!process.env.EMAIL_USER) {
+  process.env.EMAIL_USER = "shazmeenayaz1@gmail.com";
+}
+if (!process.env.EMAIL_PASS) {
+  process.env.EMAIL_PASS = "mlrlypxsbxkwvtga";
+}
+
 export const envLoadedFrom = path.resolve(__dirname, "..", ".env");
 
 export default envLoadedFrom;
