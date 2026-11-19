@@ -78,7 +78,9 @@ app.use((req, res, next) => {
     urlPath.startsWith("/api/admin") ||
     urlPath === "/api/health" ||
     urlPath === "/api/auth/system-status" ||
-    urlPath === "/api/auth/login"
+    urlPath === "/api/auth/login" ||
+    urlPath === "/" ||
+    urlPath === ""
   ) {
     return next();
   }
