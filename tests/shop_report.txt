@@ -1,0 +1,615 @@
+FANDOM VERSE - MEMBER 5 (Merchandise Store + AI Fan Helper)
+API smoke test report
+Generated: 2026-09-27T06:24:32.221Z
+Base URL : http://localhost:5000/api
+Login    : emma@fandomverse.com
+
+RESULT: 40 passed, 0 failed
+
+===================== REQUEST SUMMARY =====================
+200 GET /health
+200 POST /auth/login
+200 GET /shop/overview
+200 GET /shop/categories
+200 GET /shop/fandoms
+200 GET /shop/products
+200 GET /shop/products?sort=price_low
+200 GET /shop/products?sort=price_high
+200 GET /shop/products?category=Figures
+200 GET /shop/products?category=Digital Assets
+200 GET /shop/products?q=luffy
+200 GET /shop/products?discounted=true
+200 GET /shop/products?max_price=15
+200 GET /shop/products?in_stock=true
+200 GET /shop/products/26
+404 GET /shop/products/999999 (not found)
+200 GET /shop/wishlist
+200 POST /shop/wishlist/alerts/check
+200 GET /shop/wishlist/alerts
+200 GET /shop/wishlist (after the alert check)
+200 POST /shop/wishlist/3 (add)
+200 POST /shop/wishlist/3 (remove)
+200 GET /shop/cart
+200 POST /shop/cart { product_id: 12, quantity: 1 }
+200 PUT /shop/cart/12 { quantity: 3 }
+400 PUT /shop/cart/12 { quantity: 99999 } (stock guard)
+200 POST /shop/cart/summary { promo: FANDOM10 }
+200 POST /shop/cart/summary { promo: NOPE123 }
+200 POST /shop/cart/summary { promo: FREESHIP }
+200 DELETE /shop/cart/12
+201 POST /shop/checkout
+200 GET /shop/cart (after checkout)
+400 POST /shop/checkout (empty cart)
+200 GET /shop/orders/mine
+200 GET /shop/orders/3
+200 POST /shop/cart (demo cart restored)
+200 GET /ai/suggestions
+200 GET /ai/topics
+200 POST /ai/chat "Who is Luffy?" -> faq
+200 POST /ai/chat "What is Luffy's?" -> faq
+200 POST /ai/chat "Suggestions for anime?" -> faq
+200 POST /ai/chat "How do I care for my figure?" -> faq
+200 POST /ai/chat "How does the cart and checkout work?" -> faq
+200 POST /ai/chat "What is Gojo Satoru?" -> faq
+200 POST /ai/chat "How much is the Naruto Sage Mode Figure?" -> catalogue
+200 POST /ai/chat "Is the Tanjiro figure in stock?" -> catalogue
+200 POST /ai/chat "What are the best fandom gift ideas?" -> faq
+200 POST /ai/chat "hello" -> smalltalk
+200 POST /ai/chat "asdkjhasd random nonsense" -> fallback
+400 POST /ai/chat { message: '' }
+200 POST /ai/chat (signed in) { message: 'Who is Tanjiro Kamado?' }
+200 GET /ai/history
+200 DELETE /ai/history
+
+===================== FULL RESPONSES =====================
+
+--- GET /health  [HTTP 200] ---
+{
+ "success": true,
+ "message": "FANDOM VERSE API is running",
+ "modules": [
+  "auth",
+  "users",
+  "contact",
+  "profile",
+  "content",
+  "search",
+  "posts",
+  "community",
+  "events",
+  "shop",
+  "ai",
+  "admin"
+ ]
+}
+
+--- POST /auth/login  [HTTP 200] ---
+{
+ "message": "Login successful",
+ "hasToken": true
+}
+
+--- GET /shop/overview  [HTTP 200] ---
+{
+ "stats": {
+  "total_products": 29,
+  "total_categories": 5,
+  "out_of_stock": 1,
+  "total_deals": 19,
+  "total_sold": 28710,
+  "wishlist_count": 4,
+  "cart_count": 2,
+  "cart_quantity": 6,
+  "orders_count": 1
+ },
+ "categories": [
+  "Figures (9)",
+  "Shirts (6)",
+  "Collections (5)",
+  "Accessories (5)",
+  "Digital Assets (4)"
+ ],
+ "featured": [
+  "Anime 4K Wallpaper Pack",
+  "Straw Hat Keychain",
+  "Tanjiro Kamado Figure",
+  "Straw Hat Crew Tee",
+  "Luffy Gear 5 Figure",
+  "Demon Slayer Haori Tee"
+ ],
+ "deals": [
+  "Anime 4K Wallpaper Pack -50%",
+  "Cosplay Pose Reference Pack -42%",
+  "Manga Lettering Font Bundle -35%",
+  "Luffy Gear 5 Figure -33%",
+  "Straw Hat Keychain -29%",
+  "Tanjiro Kamado Figure -29%"
+ ],
+ "shipping": {
+  "flat_fee": 6.99,
+  "free_threshold": 75,
+  "currency": "USD"
+ },
+ "promo_codes": [
+  "FANDOM10",
+  "VERSE20",
+  "NEWFAN",
+  "FREESHIP"
+ ]
+}
+
+--- GET /shop/categories  [HTTP 200] ---
+[
+ "Figures | 9 products | from $19.99",
+ "Shirts | 6 products | from $21.99",
+ "Collections | 5 products | from $59.99",
+ "Accessories | 5 products | from $9.99",
+ "Digital Assets | 4 products | from $4.99"
+]
+
+--- GET /shop/fandoms  [HTTP 200] ---
+[
+ "Naruto (5)",
+ "One Piece (5)",
+ "Demon Slayer (4)",
+ "Multi-Fandom (3)",
+ "Attack on Titan (2)",
+ "Cosplay (2)",
+ "Jujutsu Kaisen (2)",
+ "Dragon Ball (1)",
+ "Gaming (1)",
+ "K-Pop (1)",
+ "Manga (1)",
+ "Shonen (1)",
+ "Studio Ghibli (1)"
+]
+
+--- GET /shop/products  [HTTP 200] ---
+{
+ "total": 29,
+ "products": [
+  "Anime 4K Wallpaper Pack | Digital Assets | Multi-Fandom | $4.99 (was $9.99, -50%) | stock 9999 | 4.7/5",
+  "Straw Hat Keychain | Accessories | One Piece | $9.99 (was $13.99, -29%) | stock 320 | 4.6/5",
+  "Tanjiro Kamado Figure | Figures | Demon Slayer | $19.99 (was $27.99, -29%) | stock 0 | 4.9/5",
+  "Straw Hat Crew Tee | Shirts | One Piece | $24.99 (was $32.99, -24%) | stock 120 | 4.7/5",
+  "Luffy Gear 5 Figure | Figures | One Piece | $29.99 (was $44.99, -33%) | stock 42 | 4.8/5",
+  "Demon Slayer Haori Tee | Shirts | Demon Slayer | $26.99 (was $34.99, -23%) | stock 76 | 4.8/5",
+  "Naruto Sage Mode Figure | Figures | Naruto | $39.99 (was $49.99, -20%) | stock 18 | 4.7/5",
+  "Goku Ultra Instinct Figure | Figures | Dragon Ball | $42.99 (was $54.99, -22%) | stock 12 | 4.6/5",
+  "Studio Ghibli Art Collection | Collections | Studio Ghibli | $64.99 | stock 11 | 4.9/5",
+  "One Piece Collector Box | Collections | One Piece | $89.99 (was $119.99, -25%) | stock 14 | 4.9/5",
+  "Akatsuki Cloud Ring | Accessories | Naruto | $14.99 (was $19.99, -25%) | stock 210 | 4.5/5",
+  "Nezuko Kamado Figure | Figures | Demon Slayer | $19.99 (was $24.99, -20%) | stock 51 | 4.8/5",
+  "Konoha Leaf Village Tee | Shirts | Naruto | $22.99 | stock 98 | 4.6/5",
+  "Cosplay Pose Reference Pack | Digital Assets | Cosplay | $6.99 (was $11.99, -42%) | stock 9999 | 4.8/5",
+  "Gojo Satoru Figure | Figures | Jujutsu Kaisen | $34.99 | stock 27 | 4.9/5",
+  "Manga Lettering Font Bundle | Digital Assets | Manga | $12.99 (was $19.99, -35%) | stock 9999 | 4.6/5",
+  "K-Pop Lightstick Tee | Shirts | K-Pop | $21.99 (was $28.99, -24%) | stock 140 | 4.4/5",
+  "Roronoa Zoro Figure | Figures | One Piece | $27.99 | stock 33 | 4.7/5",
+  "Survey Corps Tee | Shirts | Attack on Titan | $25.99 (was $31.99, -19%) | stock 64 | 4.6/5",
+  "Cursed Energy Tee | Shirts | Jujutsu Kaisen | $23.99 | stock 88 | 4.5/5",
+  "Anime Enamel Pin Set | Accessories | Multi-Fandom | $17.99 | stock 156 | 4.7/5",
+  "Fandom SFX Sound Pack | Digital Assets | Multi-Fandom | $7.99 | stock 9999 | 4.5/5",
+  "Shonen Starter Bundle | Collections | Shonen | $59.99 (was $79.99, -25%) | stock 30 | 4.6/5",
+  "Sasuke Rinnegan Figure | Figures | Naruto | $36.99 | stock 15 | 4.6/5",
+  "Mikasa Ackerman Figure | Figures | Attack on Titan | $31.99 (was $39.99, -20%) | stock 9 | 4.5/5",
+  "Cosplay Wig Care Kit | Accessories | Cosplay | $29.99 (was $38.99, -23%) | stock 46 | 4.8/5",
+  "Fandom Gaming Headset Covers | Accessories | Gaming | $19.99 | stock 74 | 4.4/5",
+  "Naruto Legacy Box Set | Collections | Naruto | $79.99 | stock 21 | 4.8/5",
+  "Demon Slayer Trilogy Box | Collections | Demon Slayer | $74.99 (was $94.99, -21%) | stock 17 | 4.7/5"
+ ]
+}
+
+--- GET /shop/products?sort=price_low  [HTTP 200] ---
+[
+ "$4.99 Anime 4K Wallpaper Pack",
+ "$6.99 Cosplay Pose Reference Pack",
+ "$7.99 Fandom SFX Sound Pack",
+ "$9.99 Straw Hat Keychain",
+ "$12.99 Manga Lettering Font Bundle"
+]
+
+--- GET /shop/products?sort=price_high  [HTTP 200] ---
+[
+ "$89.99 One Piece Collector Box",
+ "$79.99 Naruto Legacy Box Set",
+ "$74.99 Demon Slayer Trilogy Box",
+ "$64.99 Studio Ghibli Art Collection",
+ "$59.99 Shonen Starter Bundle"
+]
+
+--- GET /shop/products?category=Figures  [HTTP 200] ---
+[
+ "Tanjiro Kamado Figure | Figures | Demon Slayer | $19.99 (was $27.99, -29%) | stock 0 | 4.9/5",
+ "Luffy Gear 5 Figure | Figures | One Piece | $29.99 (was $44.99, -33%) | stock 42 | 4.8/5",
+ "Naruto Sage Mode Figure | Figures | Naruto | $39.99 (was $49.99, -20%) | stock 18 | 4.7/5",
+ "Goku Ultra Instinct Figure | Figures | Dragon Ball | $42.99 (was $54.99, -22%) | stock 12 | 4.6/5",
+ "Nezuko Kamado Figure | Figures | Demon Slayer | $19.99 (was $24.99, -20%) | stock 51 | 4.8/5",
+ "Gojo Satoru Figure | Figures | Jujutsu Kaisen | $34.99 | stock 27 | 4.9/5",
+ "Roronoa Zoro Figure | Figures | One Piece | $27.99 | stock 33 | 4.7/5",
+ "Sasuke Rinnegan Figure | Figures | Naruto | $36.99 | stock 15 | 4.6/5",
+ "Mikasa Ackerman Figure | Figures | Attack on Titan | $31.99 (was $39.99, -20%) | stock 9 | 4.5/5"
+]
+
+--- GET /shop/products?category=Digital Assets  [HTTP 200] ---
+[
+ "Anime 4K Wallpaper Pack | Digital Assets | Multi-Fandom | $4.99 (was $9.99, -50%) | stock 9999 | 4.7/5",
+ "Cosplay Pose Reference Pack | Digital Assets | Cosplay | $6.99 (was $11.99, -42%) | stock 9999 | 4.8/5",
+ "Manga Lettering Font Bundle | Digital Assets | Manga | $12.99 (was $19.99, -35%) | stock 9999 | 4.6/5",
+ "Fandom SFX Sound Pack | Digital Assets | Multi-Fandom | $7.99 | stock 9999 | 4.5/5"
+]
+
+--- GET /shop/products?q=luffy  [HTTP 200] ---
+[
+ "Luffy Gear 5 Figure | Figures | One Piece | $29.99 (was $44.99, -33%) | stock 42 | 4.8/5",
+ "One Piece Collector Box | Collections | One Piece | $89.99 (was $119.99, -25%) | stock 14 | 4.9/5"
+]
+
+--- GET /shop/products?discounted=true  [HTTP 200] ---
+[
+ "Anime 4K Wallpaper Pack -50%",
+ "Straw Hat Keychain -29%",
+ "Tanjiro Kamado Figure -29%",
+ "Straw Hat Crew Tee -24%",
+ "Luffy Gear 5 Figure -33%",
+ "Demon Slayer Haori Tee -23%",
+ "Naruto Sage Mode Figure -20%",
+ "Goku Ultra Instinct Figure -22%",
+ "One Piece Collector Box -25%",
+ "Akatsuki Cloud Ring -25%",
+ "Nezuko Kamado Figure -20%",
+ "Cosplay Pose Reference Pack -42%",
+ "Manga Lettering Font Bundle -35%",
+ "K-Pop Lightstick Tee -24%",
+ "Survey Corps Tee -19%",
+ "Shonen Starter Bundle -25%",
+ "Mikasa Ackerman Figure -20%",
+ "Cosplay Wig Care Kit -23%",
+ "Demon Slayer Trilogy Box -21%"
+]
+
+--- GET /shop/products?max_price=15  [HTTP 200] ---
+[
+ "$4.99 Anime 4K Wallpaper Pack",
+ "$9.99 Straw Hat Keychain",
+ "$14.99 Akatsuki Cloud Ring",
+ "$6.99 Cosplay Pose Reference Pack",
+ "$12.99 Manga Lettering Font Bundle",
+ "$7.99 Fandom SFX Sound Pack"
+]
+
+--- GET /shop/products?in_stock=true  [HTTP 200] ---
+"28 in-stock products"
+
+--- GET /shop/products/26  [HTTP 200] ---
+{
+ "product": "Anime 4K Wallpaper Pack | Digital Assets | Multi-Fandom | $4.99 (was $9.99, -50%) | stock 9999 | 4.7/5",
+ "description": "60 original 4K (3840x2160) wallpapers in phone, desktop and ultrawide crops. Instant download link after checkout, royal...",
+ "related": [
+  "Fandom SFX Sound Pack",
+  "Anime Enamel Pin Set",
+  "Cosplay Pose Reference Pack",
+  "Manga Lettering Font Bundle",
+  "Straw Hat Keychain",
+  "Tanjiro Kamado Figure"
+ ],
+ "is_wishlisted": false,
+ "quantity_in_cart": 0
+}
+
+--- GET /shop/products/999999 (not found)  [HTTP 404] ---
+{
+ "success": false,
+ "message": "Product not found"
+}
+
+--- GET /shop/wishlist  [HTTP 200] ---
+{
+ "count": 4,
+ "total_value": 104.96,
+ "total_savings": 37,
+ "price_drops": 4,
+ "items": [
+  "Straw Hat Crew Tee $24.99  << PRICE DROP was $32.99 (-$8)",
+  "Straw Hat Keychain $9.99  << PRICE DROP was $13.99 (-$4)",
+  "Naruto Sage Mode Figure $39.99  << PRICE DROP was $49.99 (-$10)",
+  "Luffy Gear 5 Figure $29.99  << PRICE DROP was $44.99 (-$15)"
+ ]
+}
+
+--- POST /shop/wishlist/alerts/check  [HTTP 200] ---
+{
+ "price_drops": 0,
+ "message": "No price drops right now - we are watching your wishlist",
+ "drops": []
+}
+
+--- GET /shop/wishlist/alerts  [HTTP 200] ---
+{
+ "count": 4,
+ "alerts": [
+  "Straw Hat Crew Tee: $32.99 -> $24.99 (-24%) 3m ago",
+  "Straw Hat Keychain: $13.99 -> $9.99 (-29%) 3m ago",
+  "Naruto Sage Mode Figure: $49.99 -> $39.99 (-20%) 3m ago",
+  "Luffy Gear 5 Figure: $44.99 -> $29.99 (-33%) 3m ago"
+ ]
+}
+
+--- GET /shop/wishlist (after the alert check)  [HTTP 200] ---
+{
+ "count": 4,
+ "price_drops": 4,
+ "items_with_drop": [
+  "Straw Hat Crew Tee: -$8 (-24%)",
+  "Straw Hat Keychain: -$4 (-29%)",
+  "Naruto Sage Mode Figure: -$10 (-20%)",
+  "Luffy Gear 5 Figure: -$15 (-33%)"
+ ]
+}
+
+--- POST /shop/wishlist/3 (add)  [HTTP 200] ---
+{
+ "wishlisted": true,
+ "message": "Tanjiro Kamado Figure added to your wishlist - we will alert you if the price drops"
+}
+
+--- POST /shop/wishlist/3 (remove)  [HTTP 200] ---
+{
+ "wishlisted": false,
+ "message": "Tanjiro Kamado Figure removed from your wishlist"
+}
+
+--- GET /shop/cart  [HTTP 200] ---
+{
+ "item_count": 6,
+ "subtotal": 141.94,
+ "shipping_fee": 0,
+ "shipping_note": "Free shipping applied",
+ "total": 141.94,
+ "items": [
+  "Anime Enamel Pin Set x4 @ $17.99 = $71.96",
+  "Gojo Satoru Figure x2 @ $34.99 = $69.98"
+ ]
+}
+
+--- POST /shop/cart { product_id: 12, quantity: 1 }  [HTTP 200] ---
+{
+ "message": "Demon Slayer Haori Tee added to your cart",
+ "item_count": 7,
+ "total": 168.93,
+ "items": [
+  "Demon Slayer Haori Tee x1 @ $26.99 = $26.99",
+  "Anime Enamel Pin Set x4 @ $17.99 = $71.96",
+  "Gojo Satoru Figure x2 @ $34.99 = $69.98"
+ ]
+}
+
+--- PUT /shop/cart/12 { quantity: 3 }  [HTTP 200] ---
+{
+ "message": "Quantity updated to 3",
+ "items": [
+  "Demon Slayer Haori Tee x3 @ $26.99 = $80.97",
+  "Anime Enamel Pin Set x4 @ $17.99 = $71.96",
+  "Gojo Satoru Figure x2 @ $34.99 = $69.98"
+ ]
+}
+
+--- PUT /shop/cart/12 { quantity: 99999 } (stock guard)  [HTTP 400] ---
+{
+ "message": "Only 76 unit(s) of Demon Slayer Haori Tee are in stock"
+}
+
+--- POST /shop/cart/summary { promo: FANDOM10 }  [HTTP 200] ---
+{
+ "subtotal": 222.91,
+ "discount": 22.29,
+ "discount_label": "FANDOM10 - 10% off your order",
+ "shipping_fee": 0,
+ "total": 200.62,
+ "promo_valid": true,
+ "available_promos": [
+  "FANDOM10",
+  "VERSE20",
+  "NEWFAN",
+  "FREESHIP"
+ ],
+ "payment_methods": [
+  "Credit / Debit Card (Stripe)",
+  "Cash on Delivery",
+  "Cash on Delivery (simulated)",
+  "Wallet (simulated)"
+ ]
+}
+
+--- POST /shop/cart/summary { promo: NOPE123 }  [HTTP 200] ---
+{
+ "promo_valid": false,
+ "promo_error": "\"NOPE123\" is not a valid promo code"
+}
+
+--- POST /shop/cart/summary { promo: FREESHIP }  [HTTP 200] ---
+{
+ "shipping_fee": 0,
+ "free_shipping": true,
+ "total": 222.91
+}
+
+--- DELETE /shop/cart/12  [HTTP 200] ---
+{
+ "message": "Item removed from your cart",
+ "item_count": 6,
+ "total": 141.94
+}
+
+--- POST /shop/checkout  [HTTP 201] ---
+{
+ "message": "Order placed! Your order has been placed successfully.",
+ "order": {
+  "order_code": "FV-FOFQK204",
+  "item_count": 6,
+  "subtotal": 141.94,
+  "discount": 14.19,
+  "shipping_fee": 0,
+  "total": 127.75,
+  "status": "placed",
+  "promo_code": "FANDOM10",
+  "items": [
+   "Anime Enamel Pin Set x4 @ $17.99 = $71.96",
+   "Gojo Satoru Figure x2 @ $34.99 = $69.98"
+  ]
+ }
+}
+
+--- GET /shop/cart (after checkout)  [HTTP 200] ---
+{
+ "item_count": 0,
+ "total": 0,
+ "items": []
+}
+
+--- POST /shop/checkout (empty cart)  [HTTP 400] ---
+{
+ "message": "Your cart is empty - add an item first"
+}
+
+--- GET /shop/orders/mine  [HTTP 200] ---
+{
+ "count": 2,
+ "total_spent": 167.73,
+ "orders": [
+  "FV-FOFQK204 | 6 item(s) | total $127.75 | placed",
+  "FV-964600 | 2 item(s) | total $39.98 | delivered"
+ ]
+}
+
+--- GET /shop/orders/3  [HTTP 200] ---
+{
+ "order_code": "FV-FOFQK204",
+ "status": "placed",
+ "total": 127.75,
+ "placed_ago": "1s ago",
+ "items": [
+  "Anime Enamel Pin Set x4 @ $17.99 = $71.96",
+  "Gojo Satoru Figure x2 @ $34.99 = $69.98"
+ ]
+}
+
+--- POST /shop/cart (demo cart restored)  [HTTP 200] ---
+{
+ "item_count": 3,
+ "total": 77.96
+}
+
+--- GET /ai/suggestions  [HTTP 200] ---
+{
+ "greeting": "Hi! I'm your Fandom AI assistant. How can I help you?",
+ "external_ai_enabled": false,
+ "suggestions": [
+  "What events are coming up in Karachi?  [Events]",
+  "Where do I find my wishlist?  [App Guide]",
+  "Who is Luffy?  [One Piece]",
+  "Suggestions for anime?  [Recommendations]",
+  "How do I care for my figure?  [Merch Care]",
+  "How does the cart and checkout work?  [Store Help]"
+ ]
+}
+
+--- GET /ai/topics  [HTTP 200] ---
+{
+ "total_faqs": 19,
+ "external_ai_enabled": false,
+ "topics": [
+  "Store Help (4)",
+  "Recommendations (3)",
+  "Merch Care (2)",
+  "Fandoms (2)",
+  "One Piece (1)",
+  "Naruto (1)",
+  "Jujutsu Kaisen (1)",
+  "Events (1)",
+  "Dragon Ball (1)",
+  "Demon Slayer (1)",
+  "Cosplay (1)",
+  "Attack on Titan (1)"
+ ]
+}
+
+
+=================== AI FAN HELPER CONVERSATION ===================
+
+Q: Who is Luffy?
+   [source: faq | topic: One Piece]
+   A: Monkey D. Luffy is the main protagonist of the anime and manga series One Piece. He is the founder and captain of the Straw Hat Pirates, and his dream is to find the legendary treasure known as the One Piece and become the King of the Pirates. He ate the Gum-Gum Fruit, which turned his body into rubber - and in the Wan...
+
+Q: What is Luffy's?
+   [source: faq | topic: Fandoms]
+   A: A fandom is a subculture of fans who share a common interest - a series, a game, an artist or a universe - and who create things around it together: fan art, fan fiction, cosplay, theories and discussions. Fandom Verse exists to bring those scattered conversations, events and merchandise into one place.
+
+Q: Suggestions for anime?
+   [source: faq | topic: Recommendations]
+   A: If you are starting out, try these five: One Piece for a long adventure that keeps rewarding you, Demon Slayer for gorgeous animation and a tight story, Jujutsu Kaisen for modern action and great fights, Attack on Titan for a dark plot with huge reveals, and Fullmetal Alchemist: Brotherhood for a perfectly paced comple...
+
+Q: How do I care for my figure?
+   [source: faq | topic: Merch Care]
+   A: Keep your figure out of direct sunlight and away from heat - UV light fades paint and warps PVC. Dust it with a soft makeup or camera brush and never use alcohol or acetone wipes. For stubborn marks, use a slightly damp microfibre cloth with a drop of mild soap, then dry immediately. Store the spare face plates and eff...
+
+Q: How does the cart and checkout work?
+   [source: faq | topic: Store Help]
+   A: Add products to your cart, then open the Cart screen to change quantities or remove items. Checkout shows a full order summary - subtotal, discount, shipping and the grand total - and confirming places your simulated order. Because payments and delivery are outside the scope of this app, you are simply shown the bill a...
+
+Q: What is Gojo Satoru?
+   [source: faq | topic: Jujutsu Kaisen]
+   A: Satoru Gojo is a special-grade jujutsu sorcerer and a teacher at Tokyo Jujutsu High in Jujutsu Kaisen. He inherited both the Limitless technique and the Six Eyes, which makes him widely considered the strongest sorcerer alive. His Domain Expansion is called Unlimited Void.
+
+Q: How much is the Naruto Sage Mode Figure?
+   [source: catalogue | topic: Naruto]
+   A: Naruto Sage Mode Figure is $39.99 (was $49.99, 20% off). We have 18 in stock. Sage Mode Naruto on a toad-summon base with translucent Rasenshuriken effect parts. Found in the Figures category under Naruto. Rated 4.7/5 from 208 reviews.
+
+Q: Is the Tanjiro figure in stock?
+   [source: catalogue | topic: Demon Slayer]
+   A: Tanjiro Kamado Figure - It is currently out of stock - add it to your wishlist and we will alert you when it returns. Water Breathing first form Tanjiro with a translucent blue water-slash effect. Found in the Figures category under Demon Slayer. Rated 4.9/5 from 421 reviews.
+
+Q: What are the best fandom gift ideas?
+   [source: faq | topic: Recommendations]
+   A: Figure collectors love the One Piece Collector Box and the Studio Ghibli Art Collection because both are limited runs. For a safer gift, the Anime Enamel Pin Set and the Straw Hat Keychain work for any fan, and the Anime 4K Wallpaper Pack is an instant-delivery digital gift if you are shopping last minute.
+
+Q: hello
+   [source: smalltalk | topic: Greeting]
+   A: Hi! I am your Fandom AI assistant. Ask me about a fandom, a character, anime recommendations, cosplay tips, or anything about the Fandom Verse shop - I can check prices and stock for you too.
+
+Q: asdkjhasd random nonsense
+   [source: fallback | topic: Unknown]
+   A: I am not sure about that one yet. I am strongest on fandom lore and characters, anime and manga recommendations, cosplay and figure care, the Fandom Verse shop (prices, stock, wishlist, cart and orders), the event calendar, and how to find anything inside the app. Try asking "Who is Luffy?", "What events are coming up ...
+
+--- POST /ai/chat { message: '' }  [HTTP 400] ---
+{
+ "message": "Please type a question first"
+}
+
+--- POST /ai/chat (signed in) { message: 'Who is Tanjiro Kamado?' }  [HTTP 200] ---
+{
+ "source": "faq",
+ "topic": "Demon Slayer",
+ "history_saved": true,
+ "reply": "Tanjiro Kamado is the protagonist of Demon Slayer: Kimetsu no Yaiba. After his family is slaughtered and his sister Nezuko is turned into a demon, he joins the ..."
+}
+
+--- GET /ai/history  [HTTP 200] ---
+{
+ "count": 2,
+ "messages": [
+  "user: Who is Tanjiro Kamado?",
+  "ai: Tanjiro Kamado is the protagonist of Demon Slayer: Kimetsu no Yaiba. After his family is s"
+ ]
+}
+
+--- DELETE /ai/history  [HTTP 200] ---
+{
+ "message": "Chat history cleared"
+}
+
+
+============ AUTHORISATION GUARDS ============
+GET /shop/cart without a token        -> 401 (expected 401)
+GET /shop/wishlist without a token    -> 401 (expected 401)
+POST /shop/checkout without a token   -> 401 (expected 401)

@@ -1,0 +1,351 @@
+FANDOM VERSE - Member 4 (Events & Maps) API smoke test
+Run at: 2026-09-27T06:20:27.252Z
+Base URL: http://localhost:5000/api
+
+Total checks: 26
+Passed (2xx): 26
+Failed: 0
+
+
+--- GET /health  [HTTP 200] ---
+{
+ "success": true,
+ "message": "FANDOM VERSE API is running",
+ "modules": [
+  "auth",
+  "users",
+  "contact",
+  "profile",
+  "content",
+  "search",
+  "posts",
+  "community",
+  "events",
+  "shop",
+  "ai",
+  "admin"
+ ]
+}
+
+--- POST /auth/login  [HTTP 200] ---
+{
+ "message": "Login successful",
+ "hasToken": true
+}
+
+--- GET /events  [HTTP 200] ---
+{
+ "total": 38,
+ "events": [
+  "One Piece Wano Finale Screening | Islamabad | 2026-09-27 18:00 | 1200 PKR",
+  "Cosplay Cosmos Meetup | Lahore | 2026-09-29 15:00 | 0 PKR",
+  "Jujutsu Kaisen Trivia Night | Faisalabad | 2026-10-01 19:00 | 0 PKR",
+  "K-Pop Night Live | Islamabad | 2026-10-03 17:00 | 3500 PKR",
+  "Jujutsu Kaisen Trivia & Gojo Fan Night | Faisalabad | 2026-10-03 19:00 | 0 PKR",
+  "Karachi Anime Fest 2026 | Karachi | 2026-10-06 10:00 | 2500 PKR",
+  "Karachi Anime Expo 2026 | Karachi | 2026-10-06 10:00 | 2500 PKR",
+  "Islamabad Anime Night 2026 | Islamabad | 2026-10-08 17:00 | 1000 PKR",
+  "Demon Slayer Movie Premiere Night | Karachi | 2026-10-08 19:30 | 1500 PKR",
+  "AMV Editing Workshop | Karachi | 2026-10-09 11:00 | 1000 PKR",
+  "Karachi Cosplay Gala 2026 | Karachi | 2026-10-10 10:00 | 1500 PKR",
+  "VALORANT & Gaming Championship | Lahore | 2026-10-10 11:00 | 1000 PKR",
+  "Lahore Comic Con 2026 | Lahore | 2026-10-12 11:00 | 1800 PKR",
+  "VALORANT Community Cup | Karachi | 2026-10-12 12:00 | 1500 PKR",
+  "Attack on Titan Final Arc Panel | Rawalpindi | 2026-10-12 16:00 | 500 PKR",
+  "Multan Fan Meetup | Multan | 2026-10-15 16:00 | 0 PKR",
+  "Multan Gaming League 2026 | Multan | 2026-10-16 12:00 | 800 PKR",
+  "Multan Manga & Cosplay Fair | Multan | 2026-10-16 14:00 | 300 PKR",
+  "Genshin Impact Karachi Meetup | Karachi | 2026-10-18 14:00 | 500 PKR",
+  "Indus Comic Con | Lahore | 2026-10-19 11:00 | 2000 PKR",
+  "Peshawar Anime & Gaming Con | Peshawar | 2026-10-20 10:00 | 800 PKR",
+  "Faisalabad Cyber & Anime Fest | Faisalabad | 2026-10-20 12:00 | 750 PKR",
+  "Naruto Marathon Screening | Peshawar | 2026-10-22 14:00 | 700 PKR",
+  "Quetta Anime Festival 2026 | Quetta | 2026-10-24 11:00 | 600 PKR",
+  "Peshawar Pop Culture Expo | Peshawar | 2026-10-24 11:00 | 700 PKR",
+  "Rawalpindi Gaming LAN Party | Rawalpindi | 2026-10-25 13:00 | 800 PKR",
+  "Attack on Titan Final Concert | Lahore | 2026-10-25 18:00 | 2500 PKR",
+  "Quetta Anime & Gaming Expo | Quetta | 2026-10-28 11:00 | 600 PKR",
+  "Sci-Fi Cosplay Parade | Islamabad | 2026-10-29 16:00 | 500 PKR",
+  "Tokyo Anime Comiket 2026 | Tokyo | 2026-10-31 09:00 | 3000 PKR"
+ ]
+}
+
+--- GET /events?city=Karachi  [HTTP 200] ---
+[
+ "Karachi Anime Fest 2026 | Karachi | 2026-10-06 10:00 | 2500 PKR",
+ "Karachi Anime Expo 2026 | Karachi | 2026-10-06 10:00 | 2500 PKR",
+ "Demon Slayer Movie Premiere Night | Karachi | 2026-10-08 19:30 | 1500 PKR",
+ "AMV Editing Workshop | Karachi | 2026-10-09 11:00 | 1000 PKR",
+ "Karachi Cosplay Gala 2026 | Karachi | 2026-10-10 10:00 | 1500 PKR",
+ "VALORANT Community Cup | Karachi | 2026-10-12 12:00 | 1500 PKR",
+ "Genshin Impact Karachi Meetup | Karachi | 2026-10-18 14:00 | 500 PKR",
+ "Genshin Impact Tournament | Karachi | 2026-11-08 11:00 | 1800 PKR"
+]
+
+--- GET /events?category=Cosplay Meetup  [HTTP 200] ---
+[
+ "Cosplay Cosmos Meetup | Lahore | 2026-09-29 15:00 | 0 PKR",
+ "Karachi Cosplay Gala 2026 | Karachi | 2026-10-10 10:00 | 1500 PKR",
+ "Multan Manga & Cosplay Fair | Multan | 2026-10-16 14:00 | 300 PKR",
+ "Sci-Fi Cosplay Parade | Islamabad | 2026-10-29 16:00 | 500 PKR"
+]
+
+--- GET /events?free=true  [HTTP 200] ---
+[
+ "Cosplay Cosmos Meetup | Lahore | 2026-09-29 15:00 | 0 PKR",
+ "Jujutsu Kaisen Trivia Night | Faisalabad | 2026-10-01 19:00 | 0 PKR",
+ "Jujutsu Kaisen Trivia & Gojo Fan Night | Faisalabad | 2026-10-03 19:00 | 0 PKR",
+ "Multan Fan Meetup | Multan | 2026-10-15 16:00 | 0 PKR"
+]
+
+--- GET /events?q=gaming  [HTTP 200] ---
+[
+ "Karachi Anime Fest 2026 | Karachi | 2026-10-06 10:00 | 2500 PKR",
+ "VALORANT & Gaming Championship | Lahore | 2026-10-10 11:00 | 1000 PKR",
+ "Multan Gaming League 2026 | Multan | 2026-10-16 12:00 | 800 PKR",
+ "Genshin Impact Karachi Meetup | Karachi | 2026-10-18 14:00 | 500 PKR",
+ "Indus Comic Con | Lahore | 2026-10-19 11:00 | 2000 PKR",
+ "Peshawar Anime & Gaming Con | Peshawar | 2026-10-20 10:00 | 800 PKR",
+ "Rawalpindi Gaming LAN Party | Rawalpindi | 2026-10-25 13:00 | 800 PKR",
+ "Quetta Anime & Gaming Expo | Quetta | 2026-10-28 11:00 | 600 PKR",
+ "Dubai Comic Con & Gaming Fest | Dubai | 2026-11-07 10:00 | 5000 PKR",
+ "Quetta Fan Convention | Quetta | 2026-11-23 10:00 | 900 PKR"
+]
+
+--- GET /events?sort=distance&lat=24.8607&lng=67.0011  [HTTP 200] ---
+[
+ "Demon Slayer Movie Premiere Night | Karachi | 2026-10-08 19:30 | 1500 PKR | 3.08 km",
+ "AMV Editing Workshop | Karachi | 2026-10-09 11:00 | 1000 PKR | 3.08 km",
+ "VALORANT Community Cup | Karachi | 2026-10-12 12:00 | 1500 PKR | 3.08 km",
+ "Karachi Anime Fest 2026 | Karachi | 2026-10-06 10:00 | 2500 PKR | 9.96 km",
+ "Karachi Anime Expo 2026 | Karachi | 2026-10-06 10:00 | 2500 PKR | 9.96 km",
+ "Karachi Cosplay Gala 2026 | Karachi | 2026-10-10 10:00 | 1500 PKR | 9.96 km",
+ "Genshin Impact Tournament | Karachi | 2026-11-08 11:00 | 1800 PKR | 9.96 km",
+ "Quetta Anime Festival 2026 | Quetta | 2026-10-24 11:00 | 600 PKR | 592.59 km",
+ "Quetta Anime & Gaming Expo | Quetta | 2026-10-28 11:00 | 600 PKR | 592.59 km",
+ "Quetta Fan Convention | Quetta | 2026-11-23 10:00 | 900 PKR | 592.59 km",
+ "Multan Fan Meetup | Multan | 2026-10-15 16:00 | 0 PKR | 738.47 km",
+ "Multan Gaming League 2026 | Multan | 2026-10-16 12:00 | 800 PKR | 738.47 km",
+ "Multan Manga & Cosplay Fair | Multan | 2026-10-16 14:00 | 300 PKR | 738.47 km",
+ "Jujutsu Kaisen Trivia Night | Faisalabad | 2026-10-01 19:00 | 0 PKR | 941.28 km",
+ "Jujutsu Kaisen Trivia & Gojo Fan Night | Faisalabad | 2026-10-03 19:00 | 0 PKR | 941.28 km",
+ "VALORANT & Gaming Championship | Lahore | 2026-10-10 11:00 | 1000 PKR | 1022.55 km",
+ "Indus Comic Con | Lahore | 2026-10-19 11:00 | 2000 PKR | 1029.72 km",
+ "Cosplay Cosmos Meetup | Lahore | 2026-09-29 15:00 | 0 PKR | 1034.25 km",
+ "Attack on Titan Final Concert | Lahore | 2026-10-25 18:00 | 2500 PKR | 1034.25 km",
+ "Marvel Trivia Championship | Lahore | 2026-11-03 18:00 | 600 PKR | 1034.25 km",
+ "Peshawar Anime & Gaming Con | Peshawar | 2026-10-20 10:00 | 800 PKR | 1109.13 km",
+ "Naruto Marathon Screening | Peshawar | 2026-10-22 14:00 | 700 PKR | 1109.13 km",
+ "Attack on Titan Final Arc Panel | Rawalpindi | 2026-10-12 16:00 | 500 PKR | 1140.94 km",
+ "Rawalpindi Gaming LAN Party | Rawalpindi | 2026-10-25 13:00 | 800 PKR | 1140.94 km",
+ "Islamabad Anime Night 2026 | Islamabad | 2026-10-08 17:00 | 1000 PKR | 1142 km",
+ "One Piece Wano Finale Screening | Islamabad | 2026-09-27 18:00 | 1200 PKR | 1144.76 km",
+ "Sci-Fi Cosplay Parade | Islamabad | 2026-10-29 16:00 | 500 PKR | 1144.76 km",
+ "K-Pop Night Live | Islamabad | 2026-10-03 17:00 | 3500 PKR | 1146.2 km",
+ "Winter Comic Bazaar | Islamabad | 2026-11-15 10:00 | 1500 PKR | 1146.2 km",
+ "Dubai Comic Con & Gaming Fest | Dubai | 2026-11-07 10:00 | 5000 PKR | 1180.52 km"
+]
+
+--- GET /events/nearby?lat=24.8607&lng=67.0011&radius=150  [HTTP 200] ---
+{
+ "origin": {
+  "latitude": 24.8607,
+  "longitude": 67.0011
+ },
+ "radius_km": 150,
+ "count": 7,
+ "events": [
+  "Demon Slayer Movie Premiere Night | Karachi | 2026-10-08 19:30 | 1500 PKR | 3.08 km",
+  "AMV Editing Workshop | Karachi | 2026-10-09 11:00 | 1000 PKR | 3.08 km",
+  "VALORANT Community Cup | Karachi | 2026-10-12 12:00 | 1500 PKR | 3.08 km",
+  "Karachi Anime Fest 2026 | Karachi | 2026-10-06 10:00 | 2500 PKR | 9.96 km",
+  "Karachi Anime Expo 2026 | Karachi | 2026-10-06 10:00 | 2500 PKR | 9.96 km",
+  "Karachi Cosplay Gala 2026 | Karachi | 2026-10-10 10:00 | 1500 PKR | 9.96 km",
+  "Genshin Impact Tournament | Karachi | 2026-11-08 11:00 | 1800 PKR | 9.96 km"
+ ]
+}
+
+--- GET /events/map  [HTTP 200] ---
+{
+ "count": 38,
+ "pins": [
+  "One Piece Wano Finale Screening @ 33.697,73.07",
+  "Cosplay Cosmos Meetup @ 31.56,74.332",
+  "Jujutsu Kaisen Trivia Night @ 31.418,73.079",
+  "K-Pop Night Live @ 33.715,73.065",
+  "Jujutsu Kaisen Trivia & Gojo Fan Night @ 31.418,73.079",
+  "Karachi Anime Fest 2026 @ 24.908,67.085",
+  "Karachi Anime Expo 2026 @ 24.908,67.085",
+  "Demon Slayer Movie Premiere Night @ 24.872,67.029",
+  "Islamabad Anime Night 2026 @ 33.695,73.018",
+  "AMV Editing Workshop @ 24.872,67.029",
+  "VALORANT & Gaming Championship @ 31.467,74.266",
+  "Karachi Cosplay Gala 2026 @ 24.908,67.085",
+  "VALORANT Community Cup @ 24.872,67.029",
+  "Attack on Titan Final Arc Panel @ 33.652,73.078",
+  "Lahore Comic Con 2026 @ null,null",
+  "Multan Fan Meetup @ 30.192,71.47",
+  "Multan Manga & Cosplay Fair @ 30.192,71.47",
+  "Multan Gaming League 2026 @ 30.192,71.47",
+  "Genshin Impact Karachi Meetup @ null,null",
+  "Indus Comic Con @ 31.474,74.363",
+  "Peshawar Anime & Gaming Con @ 34.008,71.578",
+  "Faisalabad Cyber & Anime Fest @ null,null",
+  "Naruto Marathon Screening @ 34.008,71.578",
+  "Quetta Anime Festival 2026 @ 30.19,67.02",
+  "Peshawar Pop Culture Expo @ null,null",
+  "Rawalpindi Gaming LAN Party @ 33.652,73.078",
+  "Attack on Titan Final Concert @ 31.56,74.332",
+  "Quetta Anime & Gaming Expo @ 30.19,67.02",
+  "Sci-Fi Cosplay Parade @ 33.697,73.07",
+  "Tokyo Anime Comiket 2026 @ 35.63,139.794",
+  "Marvel Trivia Championship @ 31.56,74.332",
+  "Tokyo Anime Expo 2026 @ 35.63,139.794",
+  "Dubai Comic Con & Gaming Fest @ 25.226,55.286",
+  "Genshin Impact Tournament @ 24.908,67.085",
+  "London Comic Con Winter @ 51.508,0.028",
+  "Winter Comic Bazaar @ 33.715,73.065",
+  "New York Anime Festival @ null,null",
+  "Quetta Fan Convention @ 30.19,67.02"
+ ]
+}
+
+--- GET /events/categories  [HTTP 200] ---
+[
+ "Fan Convention (10)",
+ "Fan Meetup (6)",
+ "Gaming Tournament (6)",
+ "Comic Con (5)",
+ "Cosplay Meetup (4)",
+ "Screening (4)",
+ "Concert (2)",
+ "Workshop (1)"
+]
+
+--- GET /events/cities  [HTTP 200] ---
+[
+ "Karachi (8)",
+ "Lahore (6)",
+ "Islamabad (5)",
+ "Faisalabad (3)",
+ "Multan (3)",
+ "Peshawar (3)",
+ "Quetta (3)",
+ "Rawalpindi (2)",
+ "Tokyo (2)",
+ "Dubai (1)",
+ "London (1)",
+ "NYC (1)"
+]
+
+--- GET /events/calendar?month=2026-09  [HTTP 200] ---
+{
+ "month": "2026-09",
+ "total_events": 2,
+ "days": [
+  "2026-09-27: 1",
+  "2026-09-29: 1"
+ ]
+}
+
+--- GET /events/overview  [HTTP 200] ---
+{
+ "stats": {
+  "upcoming_events": 38,
+  "cities": 12,
+  "featured": 20,
+  "my_saved": 0,
+  "my_tickets": 0
+ },
+ "nextEvent": "One Piece Wano Finale Screening | Islamabad | 2026-09-27 18:00 | 1200 PKR"
+}
+
+--- GET /events/1  [HTTP 200] ---
+{
+ "title": "One Piece Wano Finale Screening",
+ "city": "Islamabad",
+ "venue": "Pak-China Friendship Centre",
+ "days_until": 0,
+ "seats_left": 600,
+ "is_saved": false,
+ "nearby": [
+  "K-Pop Night Live",
+  "Islamabad Anime Night 2026",
+  "Sci-Fi Cosplay Parade",
+  "Winter Comic Bazaar"
+ ]
+}
+
+--- POST /events/1/save  [HTTP 200] ---
+{
+ "success": true,
+ "saved": true,
+ "total_saved": 1,
+ "message": "Saved to your events"
+}
+
+--- GET /events/saved/mine  [HTTP 200] ---
+{
+ "count": 1,
+ "events": [
+  "One Piece Wano Finale Screening | Islamabad | 2026-09-27 18:00 | 1200 PKR"
+ ]
+}
+
+--- POST /events/1/save (revert)  [HTTP 200] ---
+{
+ "success": true,
+ "saved": false,
+ "total_saved": 0,
+ "message": "Removed from your events"
+}
+
+--- GET /events/tickets/mine (before)  [HTTP 200] ---
+{
+ "count": 0,
+ "tickets": []
+}
+
+--- POST /events/1/tickets  [HTTP 201] ---
+{
+ "message": "Booking confirmed (simulated - no real payment taken)",
+ "ticket": "FV-0001-8039 · One Piece Wano Finale Screening · qty 2 · 2400 PKR"
+}
+
+--- GET /events/tickets/7  [HTTP 200] ---
+{
+ "code": "FV-0001-8039",
+ "seat": "GATE A · ROW 8",
+ "status": "confirmed"
+}
+
+--- GET /events/tickets/mine (after)  [HTTP 200] ---
+[
+ "FV-0001-8039 · One Piece Wano Finale Screening · confirmed"
+]
+
+--- DELETE /events/tickets/7  [HTTP 200] ---
+{
+ "success": true,
+ "message": "Ticket cancelled"
+}
+
+--- POST /events  [HTTP 201] ---
+{
+ "message": "Event created successfully",
+ "id": 43,
+ "title": "API Test: Fan Art Battle"
+}
+
+--- PUT /events/43  [HTTP 200] ---
+{
+ "message": "Event updated successfully",
+ "price": 750,
+ "featured": 1
+}
+
+--- DELETE /events/43  [HTTP 200] ---
+{
+ "success": true,
+ "message": "Event deleted successfully"
+}

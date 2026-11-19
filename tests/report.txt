@@ -1,0 +1,345 @@
+
+--- GET /health  [HTTP 200] ---
+{
+ "success": true,
+ "message": "FANDOM VERSE API is running",
+ "modules": [
+  "auth",
+  "users",
+  "contact",
+  "profile",
+  "content",
+  "search",
+  "posts",
+  "community",
+  "events",
+  "shop",
+  "ai",
+  "admin"
+ ]
+}
+
+--- POST /auth/login  [HTTP 200] ---
+{
+ "message": "Login successful",
+ "hasToken": true,
+ "user": {
+  "id": 15,
+  "name": "Emma",
+  "email": "emma@fandomverse.com",
+  "role": "user"
+ }
+}
+
+--- GET /search?q=naruto  [HTTP 200] ---
+{
+ "posts": [
+  "Naruto: Why the Pain arc is still peak writing"
+ ],
+ "totals": {
+  "users": 0,
+  "posts": 1,
+  "fandoms": 0
+ }
+}
+
+--- GET /search?q=lore&type=posts&sort=top  [HTTP 200] ---
+[
+ "Naruto: Why the Pain arc is still peak writing (likes 39)",
+ "Space opera timeline explained (no spoilers) (likes 31)",
+ "Jujutsu Kaisen: hidden details you probably missed (likes 25)"
+]
+
+--- GET /search?type=users&sort=popular  [HTTP 200] ---
+[
+ "Emma (4 followers)",
+ "Rahul Verma (4 followers)",
+ "Aisha Khan (4 followers)",
+ "Daniel Silva (4 followers)",
+ "Mei Tanaka (4 followers)",
+ "Sadaf (0 followers)",
+ "shazmeen (1 followers)",
+ "maryam (0 followers)"
+]
+
+--- GET /search?type=fandoms  [HTTP 200] ---
+[
+ "Anime -> 2 posts",
+ "Comics -> 1 posts",
+ "Gaming -> 1 posts",
+ "Movies & TV -> 1 posts",
+ "Music -> 1 posts",
+ "Sci-Fi -> 1 posts",
+ "Sports -> 1 posts"
+]
+
+--- GET /search/filters  [HTTP 200] ---
+{
+ "contentTypes": [
+  "all",
+  "users",
+  "posts",
+  "fandoms"
+ ],
+ "sortOptions": [
+  "popular",
+  "newest",
+  "top",
+  "trending"
+ ],
+ "fandoms": [
+  "All",
+  "Anime",
+  "Comics",
+  "Gaming",
+  "Movies & TV",
+  "Music",
+  "Sci-Fi",
+  "Sports"
+ ]
+}
+
+--- GET /search/trending  [HTTP 200] ---
+{
+ "hashtags": [
+  "#Lore (3)",
+  "#Anime (2)",
+  "#SciFi (2)",
+  "#Naruto (1)",
+  "#Comics (1)",
+  "#Indie (1)",
+  "#Reading (1)",
+  "#Guide (1)",
+  "#Music (1)",
+  "#KPop (1)",
+  "#Comeback (1)",
+  "#JujutsuKaisen (1)"
+ ],
+ "topUsers": [
+  "Emma",
+  "Rahul Verma",
+  "Aisha Khan",
+  "Daniel Silva",
+  "Mei Tanaka",
+  "shazmeen"
+ ],
+ "topPosts": [
+  "Naruto: Why the Pain arc is still peak writing",
+  "Space opera timeline explained (no spoilers)",
+  "K-Pop comeback season survival guide",
+  "Best indie graphic novels to start with in 2025",
+  "Sci-fi series worth bingeing before the finale",
+  "Match-day watch parties: building a local fan club",
+  "Community speedrunning: how fans break RPGs together",
+  "Jujutsu Kaisen: hidden details you probably missed"
+ ],
+ "topFandoms": [
+  "Anime",
+  "Gaming",
+  "Movies & TV",
+  "Comics",
+  "Music",
+  "Sports",
+  "Sci-Fi"
+ ],
+ "deepDives": [
+  "Naruto: Why the Pain arc is still peak writing",
+  "Space opera timeline explained (no spoilers)",
+  "Jujutsu Kaisen: hidden details you probably missed",
+  "Community speedrunning: how fans break RPGs together"
+ ]
+}
+
+--- GET /search/suggestions?q=an  [HTTP 200] ---
+[
+ {
+  "name": "Anime",
+  "label": "#Anime",
+  "kind": "fandom"
+ },
+ {
+  "id": 17,
+  "name": "Aisha Khan",
+  "kind": "user"
+ },
+ {
+  "id": 18,
+  "name": "Daniel Silva",
+  "kind": "user"
+ },
+ {
+  "id": 19,
+  "name": "Mei Tanaka",
+  "kind": "user"
+ },
+ {
+  "id": 18,
+  "name": "Community speedrunning: how fans break RPGs together",
+  "kind": "post"
+ },
+ {
+  "id": 23,
+  "name": "Match-day watch parties: building a local fan club",
+  "kind": "post"
+ }
+]
+
+--- GET /posts?limit=3  [HTTP 200] ---
+[
+ "Space opera timeline explained (no spoilers)",
+ "Match-day watch parties: building a local fan club",
+ "Sci-fi series worth bingeing before the finale"
+]
+
+--- GET /posts/discussions?sort=top  [HTTP 200] ---
+[
+ "Naruto: Why the Pain arc is still peak writing (likes 39)",
+ "Space opera timeline explained (no spoilers) (likes 31)",
+ "Jujutsu Kaisen: hidden details you probably missed (likes 25)",
+ "Community speedrunning: how fans break RPGs together (likes 11)"
+]
+
+--- POST /posts  [HTTP 201] ---
+{
+ "message": "Deep Dive discussion created",
+ "id": 25,
+ "title": "API Test: Best villain redemption arcs"
+}
+
+--- POST /posts/25/like  [HTTP 200] ---
+{
+ "success": true,
+ "liked": true,
+ "likes_count": 1,
+ "message": "Post liked"
+}
+
+--- POST /posts/25/comments  [HTTP 201] ---
+{
+ "success": true,
+ "message": "Comment added",
+ "comment": {
+  "id": 17,
+  "post_id": 25,
+  "user_id": 15,
+  "body": "Test comment",
+  "likes_count": 0,
+  "created_at": "2026-09-27 06:19:52",
+  "author_name": "Emma",
+  "author_avatar": null,
+  "created_ago": "1s ago"
+ }
+}
+
+--- GET /posts/25  [HTTP 200] ---
+{
+ "title": "API Test: Best villain redemption arcs",
+ "likes": 1,
+ "comments": [
+  "Test comment"
+ ]
+}
+
+--- POST /community/bookmarks/25  [HTTP 200] ---
+{
+ "success": true,
+ "bookmarked": true,
+ "total_bookmarks": 1,
+ "message": "Saved to bookmarks"
+}
+
+--- GET /community/bookmarks  [HTTP 200] ---
+[
+ "API Test: Best villain redemption arcs"
+]
+
+--- POST /community/users/2/follow  [HTTP 200] ---
+{
+ "success": true,
+ "following": true,
+ "followers_count": 1,
+ "following_count": 1,
+ "message": "Now following Sadaf"
+}
+
+--- GET /community/users/2/profile  [HTTP 200] ---
+{
+ "name": "Sadaf",
+ "followers": 1,
+ "posts": 0,
+ "isFollowing": 1
+}
+
+--- GET /community/notifications  [HTTP 200] ---
+{
+ "unread": 5,
+ "items": [
+  "system: Welcome to FANDOM VERSE! Complete a Deep Dive to earn your first badge.",
+  "bookmark: Daniel Silva saved your post",
+  "comment: Aisha Khan commented on your post",
+  "like: Mei Tanaka liked your post",
+  "follow: Rahul Verma started following you"
+ ]
+}
+
+--- POST /community/notifications/read-all  [HTTP 200] ---
+{
+ "success": true,
+ "message": "All notifications marked as read"
+}
+
+--- GET /community/overview  [HTTP 200] ---
+{
+ "success": true,
+ "stats": {
+  "total_posts": 9,
+  "total_discussions": 5,
+  "total_members": 8,
+  "my_bookmarks": 1,
+  "unread_notifications": 0,
+  "my_following": 5
+ },
+ "trendingFandoms": [
+  {
+   "name": "Anime",
+   "hashtag": "#Anime",
+   "icon": "auto_awesome_rounded",
+   "color": "#EC4899",
+   "posts_count": 3
+  },
+  {
+   "name": "Gaming",
+   "hashtag": "#Gaming",
+   "icon": "sports_esports_rounded",
+   "color": "#3B82F6",
+   "posts_count": 1
+  },
+  {
+   "name": "Movies & TV",
+   "hashtag": "#Movies",
+   "icon": "movie_creation_rounded",
+   "color": "#F59E0B",
+   "posts_count": 1
+  },
+  {
+   "name": "Comics",
+   "hashtag": "#Comics",
+   "icon": "menu_book_rounded",
+   "color": "#F97316",
+   "posts_count": 1
+  },
+  {
+   "name": "Music",
+   "hashtag": "#Music",
+   "icon": "music_note_rounded",
+   "color": "#10B981",
+   "posts_count": 1
+  }
+ ]
+}
+
+--- DELETE /posts/25  [HTTP 200] ---
+{
+ "success": true,
+ "message": "Post deleted successfully"
+}

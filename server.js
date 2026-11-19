@@ -1,0 +1,203 @@
+// Must be the first import: loads backend/.env before other modules run.
+import "./config/loadEnv.js";
+
+import express from "express";
+import cors from "cors";
+import authRoutes from "./Routes/authroute.js";
+import userRoutes from "./Routes/userroute.js";
+import contactRoutes from "./Routes/contactroute.js";
+import searchRoutes from "./Routes/searchroute.js";
+import postRoutes from "./Routes/postroute.js";
+import communityRoutes from "./Routes/communityroute.js";
+import eventRoutes from "./Routes/eventroute.js";
+import profileRoutes from "./Routes/profileroute.js";
+import contentRoutes from "./Routes/contentroute.js";
+import shopRoutes from "./Routes/shoproute.js";
+import aiRoutes from "./Routes/airoute.js";
+import adminRoutes from "./Routes/adminroute.js";
+import { initCommunitySchema } from "./database/communitySchema.js";
+import { initEventsSchema } from "./database/eventsSchema.js";
+import { initContentSchema } from "./database/contentSchema.js";
+import { initProfileSchema } from "./database/profileSchema.js";
+import { initShopSchema } from "./database/shopSchema.js";
+import { initAdminSchema } from "./database/adminSchema.js";
+import fs from "fs";
+import path from "path";
+import jwt from "jsonwebtoken";
+import db from "./database/db.js";
+import cache from "./database/cache.js";
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+// ---------------------------------------------------------------
+// Member 3 - Search & Community tables (SQLite replaces PG + Redis)
+// ---------------------------------------------------------------
+initCommunitySchema();
+
+// ---------------------------------------------------------------
+// Member 4 - Events & Maps tables (SQLite replaces PG + Redis)
+// ---------------------------------------------------------------
+initEventsSchema();
+
+// ---------------------------------------------------------------
+// Member 2 - Fandom Content tables (SQLite replaces Firestore)
+// ---------------------------------------------------------------
+initContentSchema();
+
+// ---------------------------------------------------------------
+// Member 1 - Profile / Fandom tables + SQLite user cache
+// ---------------------------------------------------------------
+initProfileSchema();
+
+// ---------------------------------------------------------------
+// Member 5 - Merchandise Store + AI Fan Helper tables
+// ---------------------------------------------------------------
+initShopSchema();
+
+// ---------------------------------------------------------------
+// Member 6 - Admin + Security (admin CRUD, logs, backup, settings)
+// ---------------------------------------------------------------
+initAdminSchema();
+
+// Drop expired cache rows on boot and every 10 minutes.
+cache.purgeExpired();
+setInterval(() => cache.purgeExpired(), 10 * 60 * 1000);
+
+// ---------------------------------------------------------------
+// Maintenance Mode Guard for fan-facing endpoints
+// ---------------------------------------------------------------
+app.use((req, res, next) => {
+  const urlPath = req.path || "";
+  // Always permit admin APIs, system-status, health check, and login
+  if (
+    urlPath.startsWith("/api/admin") ||
+    urlPath === "/api/health" ||
+    urlPath === "/api/auth/system-status" ||
+    urlPath === "/api/auth/login"
+  ) {
+    return next();
+  }
+
+  db.get("SELECT value FROM admin_settings WHERE key = 'maintenance'", (err, row) => {
+    if (row && row.value === "1") {
+      // Allow authenticated admin users through
+      const authHeader = req.headers.authorization || "";
+      const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7).trim() : null;
+      if (token) {
+        try {
+          const decoded = jwt.verify(token, process.env.JWT_SECRET);
+          if (decoded && decoded.role === "admin") {
+            return next();
+          }
+        } catch (_) {}
+      }
+
+      return res.status(503).json({
+        success: false,
+        maintenance: true,
+        message: "FANDOM VERSE is currently undergoing maintenance. Please check back later.",
+      });
+    }
+    return next();
+  });
+});
+
+// ----------------------------- Member 1 -----------------------------
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/contact", contactRoutes); // Contact Us: enquiry form + office location
+app.use("/api/profile", profileRoutes); // profile, fandoms, badges, invite, tasks, home
+
+// ----------------------------- Member 2 -----------------------------
+app.use("/api/content", contentRoutes); // fandom hub, news, gallery, video, podcasts, offline
+
+// ----------------------------- Member 3 -----------------------------
+app.use("/api/search", searchRoutes);       // search, filters, trending, suggestions
+app.use("/api/posts", postRoutes);          // feed, deep dive, likes, comments
+app.use("/api/community", communityRoutes); // profiles, follow, bookmarks, notifications
+
+// ----------------------------- Member 4 -----------------------------
+app.use("/api/events", eventRoutes);        // events, nearby, calendar, map, tickets
+
+// ----------------------------- Member 5 -----------------------------
+app.use("/api/shop", shopRoutes);          // catalogue, wishlist, cart, checkout, orders
+app.use("/api/ai", aiRoutes);              // AI Fan Helper chat + suggestions
+
+// ----------------------------- Member 6 -----------------------------
+app.use("/api/admin", adminRoutes);       // admin portal: CRUD, security, backup, logs
+
+// Health check
+app.get("/api/health", (req, res) => {
+  res.json({
+    success: true,
+    message: "FANDOM VERSE API is running",
+    modules: [
+      "auth",
+      "users",
+      "contact",
+      "profile",
+      "content",
+      "search",
+      "posts",
+      "community",
+      "events",
+      "shop",
+      "ai",
+      "admin",
+    ],
+  });
+});
+
+// 404 fallback
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: `Route not found: ${req.originalUrl}` });
+});
+
+const PORT = process.env.PORT || 5000;
+
+// Automatic backup runner (checks every 6 hours if auto_backup setting is enabled)
+function checkAutoBackup() {
+  db.get("SELECT value FROM admin_settings WHERE key = 'auto_backup'", (err, row) => {
+    if (row && row.value === "1") {
+      const BACKUP_DIR = path.resolve("./backups");
+      const DB_FILE = path.resolve("./mydb.sqlite");
+      if (!fs.existsSync(BACKUP_DIR)) fs.mkdirSync(BACKUP_DIR, { recursive: true });
+
+      try {
+        const files = fs.readdirSync(BACKUP_DIR).filter((f) => f.endsWith(".sqlite"));
+        let needsBackup = true;
+        if (files.length > 0) {
+          files.sort();
+          const latestFile = path.join(BACKUP_DIR, files[files.length - 1]);
+          const stat = fs.statSync(latestFile);
+          const ageHours = (Date.now() - stat.mtimeMs) / (1000 * 60 * 60);
+          if (ageHours < 24) needsBackup = false;
+        }
+
+        if (needsBackup && fs.existsSync(DB_FILE)) {
+          const stamp = new Date().toISOString().replace(/[:.]/g, "-").replace("T", "_").slice(0, 19);
+          const target = path.join(BACKUP_DIR, `techwizz_backup_${stamp}.sqlite`);
+          fs.copyFileSync(DB_FILE, target);
+          console.log(`[Auto Backup] Snapshot created: ${path.basename(target)}`);
+        }
+      } catch (e) {
+        console.error("[Auto Backup] Error:", e.message);
+      }
+    }
+  });
+}
+setTimeout(checkAutoBackup, 4000);
+setInterval(checkAutoBackup, 6 * 60 * 60 * 1000);
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log("Member 1 API: /api/auth, /api/users, /api/profile");
+  console.log("Member 2 API: /api/content");
+  console.log("Member 3 API: /api/search, /api/posts, /api/community");
+  console.log("Member 4 API: /api/events");
+  console.log("Member 5 API: /api/shop, /api/ai");
+  console.log("Member 6 API: /api/admin (admin portal)");
+});

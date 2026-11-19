@@ -1,0 +1,37 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node database/seedCommunity.js",
+    "seed:events": "node database/seedEvents.js",
+    "seed:content": "node database/seedContent.js",
+    "seed:profile": "node database/seedProfile.js",
+    "seed:shop": "node database/seedShop.js",
+    "seed:all": "node database/seedCommunity.js && node database/seedEvents.js && node database/seedContent.js && node database/seedProfile.js && node database/seedShop.js",
+    "test:api": "node tests/community_api_test.js",
+    "test:events": "node tests/events_api_test.js",
+    "test:content": "node tests/content_api_test.js",
+    "test:profile": "node tests/profile_api_test.js",
+    "test:shop": "node tests/shop_api_test.js",
+    "test:all": "node tests/community_api_test.js && node tests/events_api_test.js && node tests/content_api_test.js && node tests/profile_api_test.js && node tests/shop_api_test.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.1",
+    "express": "^5.2.1",
+    "google-auth-library": "^11.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^10.0.10",
+    "sqlite3": "^6.0.1",
+    "stripe": "^22.6.2"
+  }
+}

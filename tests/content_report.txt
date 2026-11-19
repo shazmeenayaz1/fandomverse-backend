@@ -1,0 +1,314 @@
+FANDOM VERSE - Member 2 (Fandom Content) API smoke test
+Run at: 2026-09-27T06:21:00.876Z
+Base URL: http://localhost:5000/api
+
+Total checks: 20
+Passed (2xx/404): 20
+Failed: 0
+
+
+--- GET /health  [HTTP 200] ---
+{
+ "success": true,
+ "message": "FANDOM VERSE API is running",
+ "modules": [
+  "auth",
+  "users",
+  "contact",
+  "profile",
+  "content",
+  "search",
+  "posts",
+  "community",
+  "events",
+  "shop",
+  "ai",
+  "admin"
+ ]
+}
+
+--- POST /auth/login  [HTTP 200] ---
+{
+ "message": "Login successful",
+ "hasToken": true,
+ "user": {
+  "id": 15,
+  "name": "Emma",
+  "email": "emma@fandomverse.com",
+  "role": "user"
+ }
+}
+
+--- GET /content/hub  [HTTP 200] ---
+{
+ "totals": {
+  "hubs": 7,
+  "items": 32,
+  "views": 245700
+ },
+ "hubs": [
+  "Anime · 8 items · 92940 views",
+  "Gaming · 7 items · 49210 views",
+  "Movies & TV · 5 items · 33910 views",
+  "Comics · 5 items · 17650 views",
+  "Music / K-Pop · 4 items · 35500 views",
+  "Sci-Fi · 3 items · 16490 views",
+  "Sports · 0 items · 0 views"
+ ],
+ "trending": [
+  "Anime",
+  "Gaming",
+  "Movies & TV",
+  "Comics",
+  "Music / K-Pop",
+  "Sci-Fi"
+ ]
+}
+
+--- GET /content/hub/anime  [HTTP 200] ---
+{
+ "hub": "Anime",
+ "stats": {
+  "items": 8,
+  "views": 92940,
+  "likes": 9202
+ },
+ "news": [
+  "One Piece: Wano finale sets a new streaming record",
+  "Studio reveals a behind-the-scenes look at the new film"
+ ],
+ "galleries": [
+  "Cosplay Showcase: Neo Tokyo Nights",
+  "Fan Art Fridays: best of the week"
+ ],
+ "videos": [
+  "Wano Arc Finale - Official Trailer",
+  "Cosplay transformation compilation"
+ ],
+ "podcasts": [
+  "Ep 24 · The Wano Retrospective"
+ ],
+ "deepDives": [
+  "Hidden trivia: 20 details you missed in the finale"
+ ],
+ "glossary": [
+  "AMV",
+  "Canon",
+  "Cosplay",
+  "Fanart",
+  "Fanfic",
+  "Filler",
+  "Headcanon",
+  "Lore",
+  "OTP",
+  "Retcon",
+  "Shipping",
+  "Sub / Dub"
+ ]
+}
+
+--- GET /content?type=news  [HTTP 200] ---
+{
+ "total": 10,
+ "items": [
+  "news · One Piece: Wano finale sets a new streaming record · Anime · -",
+  "news · Community speedrun breaks a three-year-old RPG world record · Gaming · -",
+  "news · Cosmic saga season 3 teaser drops a hidden villain clue · Movies & TV · -",
+  "news · Indie graphic novel takes the biggest award of the year · Comics · -",
+  "news · K-Pop group announces a world tour with 12 new stops · Music · -",
+  "news · Cyberpunk series renewed for two more seasons · Sci-Fi · -",
+  "news · Studio reveals a behind-the-scenes look at the new film · Anime · -",
+  "news · Open-world RPG adds the photo mode fans asked for · Gaming · -",
+  "news · Comic-Con panel schedule is out - here are the not-to-miss slots · Movies & TV · -",
+  "news · Artist alley adds 40 new indie creators this year · Comics · -"
+ ]
+}
+
+--- GET /content?type=video  [HTTP 200] ---
+{
+ "total": 6,
+ "items": [
+  "Wano Arc Finale - Official Trailer · 2:48",
+  "How the world record run actually works · 12:30",
+  "Season 3 teaser - frame by frame · 8:15",
+  "Cosplay transformation compilation · 5:02",
+  "Grand final highlights · 15:40",
+  "Behind the panels: indie artist interview · 10:22"
+ ]
+}
+
+--- GET /content?type=podcast  [HTTP 200] ---
+[
+ "S3E24 · The Wano Retrospective · 38:00",
+ "S3E25 · Speedrunning culture · 33:00",
+ "S3E27 · Comeback season round table · 35:00",
+ "S3E26 · Cinematic universes explained · 41:00",
+ "S3E28 · Indie comics rising · 29:00",
+ "S3E29 · Worldbuilding toolkit · 44:00"
+]
+
+--- GET /content?type=gallery  [HTTP 200] ---
+[
+ "Cosplay Showcase: Neo Tokyo Nights",
+ "Convention floor highlights",
+ "Lightstick ocean at the encore",
+ "Fan Art Fridays: best of the week",
+ "Comic panel art spotlight",
+ "Esports arena grand final"
+]
+
+--- GET /content?fandom=Anime&sort=popular  [HTTP 200] ---
+[
+ "video · Wano Arc Finale - Official Trailer · Anime · 2:48",
+ "news · One Piece: Wano finale sets a new streaming record · Anime · -",
+ "video · Cosplay transformation compilation · Anime · 5:02",
+ "deep_dive · Hidden trivia: 20 details you missed in the finale · Anime · -",
+ "gallery · Cosplay Showcase: Neo Tokyo Nights · Anime · -",
+ "news · Studio reveals a behind-the-scenes look at the new film · Anime · -",
+ "podcast · The Wano Retrospective · Anime · 38:00",
+ "gallery · Fan Art Fridays: best of the week · Anime · -"
+]
+
+--- GET /content?q=speedrun  [HTTP 200] ---
+[
+ "news · Community speedrun breaks a three-year-old RPG world record · Gaming · -",
+ "podcast · Speedrunning culture · Gaming · 33:00"
+]
+
+--- GET /content/discover  [HTTP 200] ---
+{
+ "spotlight": "Wano Arc Finale - Official Trailer",
+ "trending": [
+  "One Piece: Wano finale sets a new streaming record",
+  "How the world record run actually works",
+  "Cosmic saga season 3 teaser drops a hidden villain clue",
+  "Community speedrun breaks a three-year-old RPG world record",
+  "K-Pop group announces a world tour with 12 new stops",
+  "Cosplay Showcase: Neo Tokyo Nights"
+ ],
+ "latest": [
+  "Wano Arc Finale - Official Trailer",
+  "One Piece: Wano finale sets a new streaming record",
+  "The Wano Retrospective",
+  "Community speedrun breaks a three-year-old RPG world record",
+  "Cosplay Showcase: Neo Tokyo Nights",
+  "How the world record run actually works",
+  "Cosmic saga season 3 teaser drops a hidden villain clue",
+  "Season 3 teaser - frame by frame",
+  "Speedrunning culture",
+  "Indie graphic novel takes the biggest award of the year"
+ ],
+ "collections": [
+  "Cosplay Showcase: Neo Tokyo Nights",
+  "Lightstick ocean at the encore",
+  "Convention floor highlights"
+ ]
+}
+
+--- GET /content/glossary  [HTTP 200] ---
+{
+ "total": 16,
+ "categories": [
+  "Creative",
+  "Story",
+  "Watching",
+  "Gaming",
+  "Community",
+  "Music"
+ ],
+ "sample": [
+  "AMV: Anime Music Video - a fan-made edit cutting footage to a song.",
+  "Filler: Episodes that do not advance the main story, often used by long-running shows.",
+  "Sub / Dub: Subtitled (original audio) versus dubbed (re-recorded in another language).",
+  "Biome: In gaming, a distinct region or environment type within a world.",
+  "Speedrun: Playing a game as fast as possible, usually with a shared route and split timings."
+ ]
+}
+
+--- GET /content/15  [HTTP 200] ---
+{
+ "title": "Cosplay Showcase: Neo Tokyo Nights",
+ "galleryCount": 9,
+ "media": [
+  "Neon alley group shot - the rain rig took an hour to set up",
+  "LED armour detail, built over three months",
+  "Backlit portrait at the station plaza",
+  "Prop sword close-up - foam core over a 3D printed frame",
+  "Stepping lights during the final sequence",
+  "Wide shot of the full crew before wrap",
+  "Reflection shot through the storefront glass",
+  "Behind the scenes: umbrella rig for the rain scene",
+  "Full ensemble group photo"
+ ],
+ "related": [
+  "One Piece: Wano finale sets a new streaming record",
+  "Wano Arc Finale - Official Trailer",
+  "The Wano Retrospective",
+  "Convention floor highlights",
+  "Lightstick ocean at the encore",
+  "Hidden trivia: 20 details you missed in the finale"
+ ]
+}
+
+--- GET /content/1  [HTTP 200] ---
+{
+ "title": "One Piece: Wano finale sets a new streaming record",
+ "published_ago": "1d ago",
+ "paragraphs": 4,
+ "firstParagraph": "The finale closed a storyline that ran for more than four years of production, and the reaction online was immediate."
+}
+
+--- POST /content/1/view  [HTTP 200] ---
+{
+ "success": true,
+ "message": "View recorded",
+ "isOffline": false,
+ "progress": 0.6
+}
+
+--- GET /content/recent  [HTTP 200] ---
+{
+ "recent": [
+  "news · One Piece: Wano finale sets a new streaming record",
+  "video · Wano Arc Finale - Official Trailer",
+  "podcast · The Wano Retrospective",
+  "news · Community speedrun breaks a three-year-old RPG world record",
+  "gallery · Cosplay Showcase: Neo Tokyo Nights",
+  "deep_dive · Advanced lore: the complete timeline explained"
+ ],
+ "offlineCount": 3
+}
+
+--- POST /content/1/offline  [HTTP 200] ---
+{
+ "success": true,
+ "message": "Saved for offline reading",
+ "isOffline": true
+}
+
+--- GET /content/offline  [HTTP 200] ---
+{
+ "totals": {
+  "items": 4,
+  "sizeMb": 221.9
+ },
+ "offline": [
+  "One Piece: Wano finale sets a new streaming record",
+  "Wano Arc Finale - Official Trailer",
+  "The Wano Retrospective",
+  "Cosplay Showcase: Neo Tokyo Nights"
+ ]
+}
+
+--- POST /content/1/like  [HTTP 200] ---
+{
+ "message": "Content liked",
+ "isLiked": true,
+ "likesCount": 1321
+}
+
+--- GET /content/999999  [HTTP 404] ---
+{
+ "success": false,
+ "message": "Content not found"
+}

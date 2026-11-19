@@ -1,0 +1,322 @@
+FANDOM VERSE - Member 1 (Profile, Fandom Selection & Home) API smoke test
+Run at: 2026-09-27T06:21:14.833Z
+Base URL: http://localhost:5000/api
+
+Total checks: 20
+Passed (2xx/expected 4xx): 20
+Failed: 0
+
+
+--- GET /health  [HTTP 200] ---
+{
+ "success": true,
+ "message": "FANDOM VERSE API is running",
+ "modules": [
+  "auth",
+  "users",
+  "contact",
+  "profile",
+  "content",
+  "search",
+  "posts",
+  "community",
+  "events",
+  "shop",
+  "ai",
+  "admin"
+ ]
+}
+
+--- POST /auth/login  [HTTP 200] ---
+{
+ "message": "Login successful",
+ "hasToken": true
+}
+
+--- GET /profile/me (no token)  [HTTP 401] ---
+"Authentication required. Please log in."
+
+--- GET /profile/me  [HTTP 200] ---
+{
+ "cached": false,
+ "user": {
+  "name": "Emma",
+  "email": "emma@fandomverse.com",
+  "invite_code": "FV00015E97C",
+  "points": 30,
+  "level": 1,
+  "joined_ago": "1m ago"
+ },
+ "fandoms": [
+  "Anime #Anime",
+  "Gaming #Gaming",
+  "Music #Music"
+ ],
+ "badges": [
+  "Founder Fan",
+  "Fandom Starter",
+  "Multi-Fandom",
+  "Deep Diver"
+ ],
+ "stats": {
+  "fandom_count": 3,
+  "posts_count": 2,
+  "bookmarks_count": 0,
+  "viewed_count": 6,
+  "offline_count": 4,
+  "saved_events_count": 0,
+  "tickets_count": 1,
+  "badge_count": 4,
+  "following_count": 5,
+  "followers_count": 4,
+  "completed_tasks": 1,
+  "total_tasks": 8
+ },
+ "completion": "13%",
+ "newBadges": []
+}
+
+--- GET /profile/me (cached)  [HTTP 200] ---
+{
+ "cached": true,
+ "name": "Emma"
+}
+
+--- GET /profile/avatars  [HTTP 200] ---
+[
+ "assets/images/avatars/avatar_01.jpg",
+ "assets/images/avatars/avatar_02.jpg",
+ "assets/images/avatars/avatar_03.jpg",
+ "assets/images/avatars/avatar_04.jpg",
+ "assets/images/avatars/avatar_05.jpg",
+ "assets/images/avatars/avatar_06.jpg",
+ "assets/images/avatars/avatar_07.jpg",
+ "assets/images/avatars/avatar_08.jpg"
+]
+
+--- PUT /profile/me  [HTTP 200] ---
+{
+ "message": "Profile updated successfully",
+ "newBadges": [
+  "profile_pro"
+ ],
+ "user": {
+  "name": "Emma",
+  "bio": "Anime addict | One Piece forever | Pocket edition beta fan",
+  "avatar": "assets/images/avatars/avatar_01.jpg"
+ }
+}
+
+--- PUT /profile/me (invalid avatar)  [HTTP 200] ---
+"Profile updated successfully"
+
+--- GET /profile/fandoms  [HTTP 200] ---
+{
+ "selected": [
+  "Anime",
+  "Gaming",
+  "Music"
+ ],
+ "fandoms": [
+  "Sci-Fi · assets/images/fandoms/scifi.jpg · selected=false",
+  "Anime · assets/images/fandoms/anime.jpg · selected=true",
+  "Comics · assets/images/fandoms/comics.jpg · selected=false",
+  "Gaming · assets/images/fandoms/gaming.jpg · selected=true",
+  "Movies & TV · assets/images/fandoms/movies_tv.jpg · selected=false",
+  "Music · assets/images/fandoms/music.jpg · selected=true",
+  "Sports · assets/images/fandoms/sports.jpg · selected=false"
+ ]
+}
+
+--- PUT /profile/fandoms  [HTTP 200] ---
+{
+ "message": "Saved 3 fandoms",
+ "selected": [
+  "Anime",
+  "Gaming",
+  "Music"
+ ],
+ "newBadges": []
+}
+
+--- PUT /profile/fandoms (empty)  [HTTP 400] ---
+"Select at least one fandom"
+
+--- GET /profile/badges  [HTTP 200] ---
+{
+ "earned": "5/10",
+ "progress": "50%",
+ "badges": [
+  "EARNED · Founder Fan · Milestone",
+  "EARNED · Fandom Starter · Setup",
+  "EARNED · Multi-Fandom · Setup",
+  "EARNED · Profile Pro · Profile",
+  "EARNED · Deep Diver · Content",
+  "locked · News Junkie · Content",
+  "locked · Binge Watcher · Content",
+  "locked · Social Butterfly · Social",
+  "locked · Event Goer · Events",
+  "locked · Top Fan · Milestone"
+ ]
+}
+
+--- GET /profile/invite  [HTTP 200] ---
+{
+ "inviteCode": "FV00015E97C",
+ "inviteCount": 0,
+ "rewardPerInvite": 50,
+ "pointsEarned": 0,
+ "invited": [],
+ "shareMessage": "Join me on FANDOM VERSE - one app for every fandom! Use my invite code FV00015E97C when you sign up: https://fandomverse.app/invite/FV00015E97C"
+}
+
+--- POST /profile/invite/claim (own code)  [HTTP 404] ---
+"That invite code does not exist"
+
+--- GET /profile/tasks  [HTTP 200] ---
+{
+ "points": 30,
+ "completed": "1/8",
+ "earnedPoints": 30,
+ "tasks": [
+  "Invite a friend · 0/1 · 0%",
+  "Complete your profile · 0/1 · 0%",
+  "Read 3 news stories · 0/3 · 0%",
+  "Watch a video clip · 0/1 · 0%",
+  "Join a discussion · 0/1 · 0%",
+  "Bookmark media · 0/1 · 0%",
+  "Follow 2 fans · 0/2 · 0%",
+  "Pick 3 fandoms · 3/3 · 100%"
+ ]
+}
+
+--- POST /profile/tasks/invite_friend/complete  [HTTP 200] ---
+{
+ "message": "Task complete! +50 fan points",
+ "progress": "1/1",
+ "isCompleted": true,
+ "points": 80
+}
+
+--- POST /profile/tasks/nope/complete  [HTTP 404] ---
+"Task not found"
+
+--- GET /profile/settings  [HTTP 200] ---
+{
+ "settings": {
+  "user_id": 15,
+  "language": "English",
+  "dark_mode": 1,
+  "push_enabled": 1,
+  "push_events": 1,
+  "push_content": 1,
+  "push_community": 1,
+  "email_updates": 0,
+  "autoplay_video": 1,
+  "offline_sync": 1,
+  "updated_at": "2026-09-27 06:19:23",
+  "is_public": 1
+ },
+ "languages": [
+  "English",
+  "اردو",
+  "हिन्दी",
+  "العربية",
+  "Español",
+  "日本語",
+  "한국어"
+ ]
+}
+
+--- PUT /profile/settings  [HTTP 200] ---
+{
+ "message": "Settings saved",
+ "settings": {
+  "user_id": 15,
+  "language": "English",
+  "dark_mode": 1,
+  "push_enabled": 1,
+  "push_events": 1,
+  "push_content": 0,
+  "push_community": 1,
+  "email_updates": 0,
+  "autoplay_video": 1,
+  "offline_sync": 1,
+  "updated_at": "2026-09-27 06:21:14",
+  "is_public": 1
+ }
+}
+
+--- GET /profile/home  [HTTP 200] ---
+{
+ "greeting": "Good evening",
+ "user": "Emma",
+ "level": 1,
+ "points": 80,
+ "stats": {
+  "fandom_count": 3,
+  "posts_count": 2,
+  "bookmarks_count": 0,
+  "viewed_count": 6,
+  "offline_count": 4,
+  "saved_events_count": 0,
+  "tickets_count": 1,
+  "badge_count": 5,
+  "following_count": 5,
+  "followers_count": 4,
+  "completed_tasks": 2,
+  "total_tasks": 8
+ },
+ "completion": "25%",
+ "badges": [
+  "Founder Fan",
+  "Fandom Starter",
+  "Multi-Fandom",
+  "Profile Pro",
+  "Deep Diver"
+ ],
+ "trending": [
+  "Sci-Fi (2) selected=false",
+  "Anime (1) selected=true",
+  "Comics (0) selected=false",
+  "Gaming (0) selected=true",
+  "Movies & TV (0) selected=false",
+  "Music (0) selected=true",
+  "Sports (0) selected=false"
+ ],
+ "hubs": [
+  "Anime · assets/images/fandoms/anime.jpg",
+  "Gaming · assets/images/fandoms/gaming.jpg",
+  "Movies & TV · assets/images/fandoms/movies_tv.jpg",
+  "Comics · assets/images/fandoms/comics.jpg",
+  "Music / K-Pop · assets/images/fandoms/music.jpg",
+  "Sci-Fi · assets/images/fandoms/scifi.jpg"
+ ],
+ "latestNews": [
+  "One Piece: Wano finale sets a new streaming record · 1d ago",
+  "Community speedrun breaks a three-year-old RPG world record · 2d ago",
+  "Cosmic saga season 3 teaser drops a hidden villain clue · 3d ago",
+  "Indie graphic novel takes the biggest award of the year · 4d ago",
+  "K-Pop group announces a world tour with 12 new stops · 5d ago",
+  "Cyberpunk series renewed for two more seasons · 6d ago"
+ ],
+ "forYou": [
+  "news · One Piece: Wano finale sets a new streaming record",
+  "video · Wano Arc Finale - Official Trailer",
+  "podcast · The Wano Retrospective",
+  "gallery · Cosplay Showcase: Neo Tokyo Nights",
+  "news · Community speedrun breaks a three-year-old RPG world record",
+  "video · How the world record run actually works",
+  "podcast · Speedrunning culture",
+  "news · K-Pop group announces a world tour with 12 new stops"
+ ],
+ "continueWatching": [
+  "One Piece: Wano finale sets a new streaming record · 60%",
+  "Wano Arc Finale - Official Trailer · 40%",
+  "The Wano Retrospective · 40%",
+  "Community speedrun breaks a three-year-old RPG world record · 15%",
+  "Cosplay Showcase: Neo Tokyo Nights · 40%"
+ ],
+ "nextEvent": "One Piece Wano Finale Screening @ Islamabad on 2026-09-27",
+ "unreadNotifications": 3
+}
