@@ -1,5 +1,5 @@
 import db from "../database/db.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import transporter, { getTransporter } from "../config/email.js";
 import { OAuth2Client } from "google-auth-library";
