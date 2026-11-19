@@ -63,8 +63,10 @@ initShopSchema();
 initAdminSchema();
 
 // Drop expired cache rows on boot and every 10 minutes.
-cache.purgeExpired();
-setInterval(() => cache.purgeExpired(), 10 * 60 * 1000);
+if (!process.env.VERCEL) {
+  cache.purgeExpired();
+  setInterval(() => cache.purgeExpired(), 10 * 60 * 1000);
+}
 
 // ---------------------------------------------------------------
 // Maintenance Mode Guard for fan-facing endpoints
@@ -189,15 +191,19 @@ function checkAutoBackup() {
     }
   });
 }
-setTimeout(checkAutoBackup, 4000);
-setInterval(checkAutoBackup, 6 * 60 * 60 * 1000);
+if (!process.env.VERCEL) {
+  setTimeout(checkAutoBackup, 4000);
+  setInterval(checkAutoBackup, 6 * 60 * 60 * 1000);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log("Member 1 API: /api/auth, /api/users, /api/profile");
-  console.log("Member 2 API: /api/content");
-  console.log("Member 3 API: /api/search, /api/posts, /api/community");
-  console.log("Member 4 API: /api/events");
-  console.log("Member 5 API: /api/shop, /api/ai");
-  console.log("Member 6 API: /api/admin (admin portal)");
-});
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log("Member 1 API: /api/auth, /api/users, /api/profile");
+    console.log("Member 2 API: /api/content");
+    console.log("Member 3 API: /api/search, /api/posts, /api/community");
+    console.log("Member 4 API: /api/events");
+    console.log("Member 5 API: /api/shop, /api/ai");
+    console.log("Member 6 API: /api/admin (admin portal)");
+  });
+}
+
+export default app;
