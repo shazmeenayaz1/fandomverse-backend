@@ -9,8 +9,14 @@ if (process.env.VERCEL) {
   // ── Vercel serverless: use sql.js (pure WebAssembly, no native deps) ──
   const initSqlJs = (await import("sql.js")).default;
   const fs = await import("fs");
+  const { createRequire } = await import("module");
+  const require = createRequire(import.meta.url);
 
-  const SQL = await initSqlJs();
+  // Point sql.js to its .wasm binary so Vercel's bundler can find it.
+  const wasmPath = require.resolve("sql.js/dist/sql-wasm.wasm");
+  const SQL = await initSqlJs({
+    locateFile: () => wasmPath,
+  });
 
   // On Vercel, /tmp is the only writable directory.
   const TMP_DB = "/tmp/mydb.sqlite";
