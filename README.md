@@ -3,20 +3,21 @@
 Official backend API for **FandomVerse** social platform (Flutter + Node.js Express).
 
 ## 🌐 Live Production API
-- **Live Status (Click to test):** [https://fandomverse-backend.vercel.app/api/health](https://fandomverse-backend.vercel.app/api/health)
-- **API Base URL for Flutter/App:** `https://fandomverse-backend.vercel.app/api`
+- **Live Status (Click to open):** [https://fandomverse-backend-vtq6.vercel.app](https://fandomverse-backend-vtq6.vercel.app)
+- **API Base URL for Flutter App:** `https://fandomverse-backend-vtq6.vercel.app/api`
 
 ---
 
-## 📡 Live Test Links (Open in Browser)
-- **Health Check:** [https://fandomverse-backend.vercel.app/api/health](https://fandomverse-backend.vercel.app/api/health)
-- **Content Feed:** [https://fandomverse-backend.vercel.app/api/content](https://fandomverse-backend.vercel.app/api/content)
-- **Events List:** [https://fandomverse-backend.vercel.app/api/events](https://fandomverse-backend.vercel.app/api/events)
-- **Shop Catalog:** [https://fandomverse-backend.vercel.app/api/shop/overview](https://fandomverse-backend.vercel.app/api/shop/overview)
+## 📡 Live Endpoints (Click to test)
+- **Status & Info:** [https://fandomverse-backend-vtq6.vercel.app](https://fandomverse-backend-vtq6.vercel.app)
+- **Health Check:** [https://fandomverse-backend-vtq6.vercel.app/api/health](https://fandomverse-backend-vtq6.vercel.app/api/health)
+- **Content Feed:** [https://fandomverse-backend-vtq6.vercel.app/api/content](https://fandomverse-backend-vtq6.vercel.app/api/content)
+- **Events List:** [https://fandomverse-backend-vtq6.vercel.app/api/events](https://fandomverse-backend-vtq6.vercel.app/api/events)
+- **Shop Catalog:** [https://fandomverse-backend-vtq6.vercel.app/api/shop/overview](https://fandomverse-backend-vtq6.vercel.app/api/shop/overview)
 
 ---
 
-## 📡 API Endpoints
+## 📡 All API Routes
 
 ### 🔐 Auth & Users
 - `POST /api/auth/register` - User registration
