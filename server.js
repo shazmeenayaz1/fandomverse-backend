@@ -133,12 +133,19 @@ app.use("/api/ai", aiRoutes);              // AI Fan Helper chat + suggestions
 // ----------------------------- Member 6 -----------------------------
 app.use("/api/admin", adminRoutes);       // admin portal: CRUD, security, backup, logs
 
-// Root route
-app.get("/", (req, res) => {
+// Root and API base routes
+app.get(["/", "/api", "/api/index.js"], (req, res) => {
   res.json({
     success: true,
     message: "FandomVerse Backend API is Live on Vercel!",
-    health: "/api/health",
+    status: "online",
+    endpoints: {
+      health: "/api/health",
+      content: "/api/content",
+      events: "/api/events",
+      shop: "/api/shop/overview",
+      auth: "/api/auth/login",
+    },
   });
 });
 
